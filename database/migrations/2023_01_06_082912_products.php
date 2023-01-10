@@ -14,7 +14,7 @@ class Products extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('id')->unique();
             $table->string('title',256)->nullable();
             $table->text('body_html')->nullable();
             $table->string('vendor',128)->nullable();
@@ -59,7 +59,7 @@ class Products extends Migration
             $table->string('admin_graphql_api_id',256)->nullable();
         });    
         Schema::create('product_options', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('id')->unique();
             $table->unsignedBigInteger('product_id');
             $table->string('name',256)->nullable();
             $table->integer('position')->unsigned()->nullable();
@@ -68,14 +68,14 @@ class Products extends Migration
             $table->unsignedBigInteger('option_id');
             $table->unsignedBigInteger('product_id');
             $table->string('value',256);
+            $table->unique(['option_id', 'product_id','value']);
         });   
         Schema::create('product_images', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('id')->unique();
             $table->unsignedBigInteger('product_id')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
             $table->integer('position')->unsigned()->nullable();
-
             $table->text('alt')->nullable();
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
@@ -86,9 +86,10 @@ class Products extends Migration
             $table->unsignedBigInteger('id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('image_id');
+            $table->unique(['id', 'product_id','image_id']);
         });   
         Schema::create('product_image', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('id')->unique();
             $table->unsignedBigInteger('product_id')->nullable();
             $table->integer('position')->unsigned()->nullable();
             $table->timestamp('created_at')->nullable();
@@ -103,6 +104,7 @@ class Products extends Migration
             $table->unsignedBigInteger('id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('image_id');
+            $table->unique(['id', 'product_id','image_id']);
         });   
     }
 
